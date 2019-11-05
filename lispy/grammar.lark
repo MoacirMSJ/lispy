@@ -1,13 +1,24 @@
 ?start : value+
 
-?value : SYMBOL
- 
+?value : exp
+
+?exp:  atom | list
+
+?number : INT | FLOAT
+
+?atom : (STRING | number | SYMBOL | BOOL | operator) ->atom
+
+?list : "(" exp* ")" ->list
+
+?operator : /[\+|-|\/|\*]/
+
 
 // Terminais
 SYMBOL.0  : /[-!+\/*@$%^&~<>?|\\\w=]+/
 STRING    : /"[^"\\]*(\\[^\n\t\r\f][^"\\]*)*"/
 INT.1     : /-?\d+/
 FLOAT.2   : /-?\d+\.\d+/
+BOOL : /#t/|/#f/
 
 %ignore /\s+/
 %ignore /;[^\n]*/

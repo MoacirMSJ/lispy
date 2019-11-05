@@ -7,6 +7,28 @@ from .runtime import Symbol
 class LispTransformer(InlineTransformer):
     def start(self, *args): 
         return [Symbol.BEGIN, *args]
+    
+    def list(self, *args):
+        return list(args)
+
+    def atom(self, args):
+        if(str(args) == '#t'):
+            return True
+        elif (str(args) == '#f'):
+            return False
+        else:
+            try:
+                return int(args)
+            except ValueError:
+                try:
+                    return float(args)
+                except ValueError:
+                    if(args.type == 'STRING'):
+                        res = str(args)[1:-1]
+                        res = res.replace("\\n","\n").replace("\\t","\t").replace("\\","")
+                        return res
+                    else:    
+                        return Symbol(str(args))
 
 def parse(src: str):
     """
