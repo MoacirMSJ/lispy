@@ -5,11 +5,15 @@ from .runtime import Symbol
 
 
 class LispTransformer(InlineTransformer):
+
     def start(self, *args): 
         return [Symbol.BEGIN, *args]
     
     def list(self, *args):
         return list(args)
+
+    def quote(self, *args):
+        return [Symbol.QUOTE, *args]
 
     def atom(self, args):
         if(str(args) == '#t'):
@@ -30,6 +34,7 @@ class LispTransformer(InlineTransformer):
                     else:    
                         return Symbol(str(args))
 
+    
 def parse(src: str):
     """
     Compila string de entrada e retorna a S-expression equivalente.

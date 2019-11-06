@@ -2,7 +2,7 @@
 
 ?value : exp
 
-?exp:  atom | list
+?exp:  atom | list |qt
 
 ?number : INT | FLOAT
 
@@ -12,6 +12,7 @@
 
 ?operator : /[\+|-|\/|\*]/
 
+?qt : ("'"exp*) ->quote
 
 // Terminais
 SYMBOL.0  : /[-!+\/*@$%^&~<>?|\\\w=]+/
