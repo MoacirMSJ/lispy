@@ -48,17 +48,27 @@ def eval(x, env=None):
     # Comando (let <expression> <expression>)
     # (let ((x 1) (y 2)) (+ x y))
     elif head == Symbol.LET:
-        return NotImplemented
+        
+        (_,defs,expr) = x
+        local = ChainMap({},env)
+        
+        for i in defs:
+            eval([Symbol.DEFINE,i[0],i[1]],local)
+        
+        return eval(expr,local)
+
 
     # Comando (lambda <vars> <body>)
     # (lambda (x) (+ x 1))
     elif head == Symbol.LAMBDA:
         (_, names, body) = x
         
+        if((type(names[0])== int) | (type(names[0])== float) | (type(names[0])==bool)):
+            raise TypeError
+   
         def proc(*args):
             local = dict(zip(names, args))
             return eval(body, ChainMap(local, env))
-        
         return proc
 
     # Lista/chamada de funções
